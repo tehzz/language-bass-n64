@@ -1,0 +1,9 @@
+'.source.bass.n64':
+  'editor':
+    'autoIndentOnPaste': false
+    'softTabs': true
+    'tabLength': 2
+    'foldEndPattern': '^\\s*\\}'
+    'commentStart': '// '
+    'increaseIndentPattern': '(?x)\\{ [^}"\']* $'
+    'decreaseIndentPattern': '(?x)^\\s*(\\s* [*] .* [*]/ \\s*)*}'

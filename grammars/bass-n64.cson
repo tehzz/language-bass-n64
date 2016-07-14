@@ -1,0 +1,328 @@
+'scopeName': 'source.bass.n64'
+'fileTypes': [
+  'asm'
+  'bass'
+  'bassN64'
+]
+'firstLineMatch': '^//.*\\b(bass(-*|\\s*)[nN]64)'
+'name': 'Bass Assembler: N64-MIPS'
+'patterns':[
+  {
+    'include': '#comments'
+  }
+  {
+    'include': '#MIPS 1'
+  }
+  {
+    'include': '#MIPS 2'
+  }
+  {
+    'include': '#MIPS 3'
+  }
+  {
+    'include': '#MIPS Registers'
+  }
+  {
+    'include': '#Bass Assembler'
+  }
+]
+'repository':
+  'comments':
+    'patterns':[
+      {
+        'begin': '(^[ \\t]+)?(?=//)'
+        'beginCaptures':
+          '1':
+            'name': 'punctuation.whitespace.comment.leading.bass'
+        'end': '(?!\\G)'
+        'patterns': [
+          {
+            'begin': '//'
+            'beginCaptures':
+              '0':
+                'name': 'punctuation.definition.comment.bass'
+            'end': '\\n'
+            'name': 'comment.line.double-slash.bass'
+          }
+        ]
+      }
+    ]
+  'MIPS 1':
+    'patterns':[
+      {
+        'comment': 'MIPS 1 cop1 (FPU) Instructions'
+        'match': '\\b((?x)l\\.s|s\\.s|
+                  (add|sub|mul|div)\\.[sd]|
+                  (abs|mov|neg)\\.[sd]|
+                  trunc\\.w\\.[sd]|
+                  cvt\\.s\\.[dw]|
+                  cvt\\.d\\.[sw]|
+                  cvt\\.w\\.[sd]|
+                  c\\.(f|un|eq|ueq|olt|ult|ole|ule|sf|ngle|seq|ngl|lt|nge|le|ngt)\\.[sd]
+                  )\\b'
+        'name': 'support.function.mips.cop1'
+      }
+      {
+        'comment':'MIPS 1 Instructions'
+        'match': '\\b((?x)syscall|break|
+                  sll|srl|sra|sllv|srlv|srav|
+                  add|addu|sub|subu|and|or|xor|nor|
+                  slt|sltu|
+                  addi|addiu|slti|sltiu|andi|ori|xori|
+                  beq|bne|
+                  bltz|blez|bgtz|bgez|bltzal|bgezal|
+                  j|jal|
+                  jr|jalr|
+                  lui|
+                  lb|lh|lwl|lw|lbu|lhu|lwr|
+                  lwc[0-3]|
+                  sb|sh|swl|sw|swr|swc[0-3]|
+                  bc[0-3]f|bc[0-4]t|
+                  [mc][tf]c[0-3]|
+                  cop[0-3])\\b'
+        'name': 'support.function.mips'
+      }
+      {
+        'comment':'MIPS 1 Pseudo-Instructions'
+        'match': '\\b((?x)nop|ssnop|
+                  abs|b|bal|beqz|bnez|
+                  bgeu?|bgtu?|bleu?|bltu?|
+                  la|lli|li|
+                  negu?|not|
+                  seq|sgeu?|sgtu?|sleu?|sne|
+                  subiu?)\\b'
+        'name': 'support.function.mips.pseudo'
+      }
+      {
+        'comment': 'MIPS 1 Mult/Div'
+        'match': '\\b(multu?|divu?|m[tf](lo|hi))\\b'
+        'name': 'support.function.mips'
+      }
+      {
+        'comment': 'MIPS 1 Mult/Div Pseudo-Instructions. Add div(u) once I figure out how to check for three registers'
+        'match': '\\b(mul[uo]?u?|remu?)\\b'
+        'name': 'support.function.mips.pseudo'
+      }
+      {
+        'comment': 'MIPS 1 cop0 Instructions'
+        'match': '\\b(tlb[rp]|tlbw[ir]|rfe)\\b'
+        'name': 'support.function.mips.cop0'
+      }
+    ]
+  'MIPS 2':
+    'patterns':[
+      {
+        'comment': 'MIPS2 Instructions'
+        'match': '\\b((?x)b(eq|ne|lt|ge|le|gt)z(al)?l|
+                  beql|bnel|sync|ll|sc|
+                  [ls]dc[1-3]|
+                  t(ge|lt|eq|ne)i?u?|
+                  bc[0-3][ft]l)\\b'
+        'name': 'support.function.mips'
+      }
+      {
+        'comment': 'MIPS2 Pseudo'
+        'match': '\\b(b[gl][et]u?l)\\b'
+        'name': 'support.function.mips.pseudo'
+      }
+      {
+      'comment': 'MIPS2 COP1 (FPU) Instructions'
+      'match': '\\b((?x)sqrt\\.[sd]|
+                (ceil|floor|round|trunc)\\.w\\.[sd])\\b'
+      'name': 'support.function.mips.cop1'
+      }
+    ]
+  'MIPS 3':
+    'patterns':[
+      {
+        'comment': 'MIPS3 Instructions'
+        'match': '\\b((?x)eret|dnegu?|
+                  ds[lr][la](v|32)?|
+                  dmultu?|ddivu?|
+                  daddi?u?|dsubu?|
+                  ld[lr]?|lwu|lld|
+                  sd[lr]?|scd|
+                  cache|
+                  dm[ft]c[0-3])\\b'
+        'name': 'support.function.mips'
+      }
+      {
+        'comment': 'MIPS3 Pseudo'
+        'match': '\\b((?x)move|
+                  dli|dabs|ddivu?|
+                  dmul[ou]?u?|
+                  dremu?|dro[lr])\\b'
+        'name': 'support.function.mips.pseudo'
+      }
+      {
+        'comment': 'MIPS 3 COP1 (FPU)'
+        'match': '\\b((?x)[ls]\\.d|
+                  (round|trunc|ceil|floor)\\.l\\.[sd]|
+                  cvt\\.[sd]\\.l|
+                  cvt\\.l\\.[sd])\\b'
+        'name': 'support.function.mips.cop1'
+      }
+    ]
+  'MIPS Registers':
+    'patterns':[
+      {
+        'comment': 'Technically, the only registers Bass accepts are number (0-31),
+                    but the reg names should be included as constants for every asm file.
+                    Includes s8 and fp (same reg)
+                    Counts only t0, not SPIM $t0 or T0--case sensitive'
+        'match': '(?<!\\$)\\b(zero|v[01]|a[0-3]|t[0-9]|s[0-8]|gp|sp|fp|ra)\\b'
+        'name': 'variable.other.register.usable.by-name.mips'
+        'captures':
+          1:
+            'name': 'punctuation.definition.variable.mips'
+      }
+      {
+        'comment': 'Register Numbered r0, r1, etc'
+        'match': '(?<!\\$)\\br(0|[2-9]|1[0-9]|2[0-5]|2[89]|3[0-1])\\b'
+        'name': 'variable.other.register.usable.by-number.mips'
+        'captures':
+          1:
+            'name': 'punctuation.definition.variable.mips'
+      }
+      {
+        'comment': 'Separate formating for the assembler reserved registers
+                    at, k0, k1 / r1, r26, r27'
+        'match': '(?<!\\$)\\b(at|k[01])\\b|(?<!\\$)\\br(1|2[67])\\b'
+        'name': 'variable.other.register.reserved.mips'
+        'captures':
+          3:
+            'name': 'punctuation.definition.variable.mips'
+          4:
+            'name': 'punctuation.definition.variable.mips'
+      }
+      {
+        'comment': 'FPU cop1 Registers. Matches both $f1 and f1'
+        'match': '(?<!\\$)\\bf([0-9]|1[0-9]|2[0-9]|3[0-1])\\b'
+        'name': 'variable.other.register.usable.floating-point.mips'
+        'captures':
+          1:
+            'name': 'punctuation.definition.variable.mips'
+      }
+    ]
+  'Bass Assembler':
+    'patterns':[
+      {
+        'comment': 'Hex Number as 0xAF01; No 0X1C5F'
+        'match': '\\b(?<!\\$%)0x[0-9a-fA-F]+\\b(?!\\$)'
+        'name': 'constant.numeric.hex.bass'
+      }
+      {
+        'comment': 'Hex Number as $10AF'
+        'match':'(?<![\\w$%])\\$[0-9a-fA-F]+\\b(?!\\$)'
+        'name': 'constant.numeric.hex.bass'
+      }
+      {
+        'comment': 'Binary Number as 0b01001'
+        'match': '\\b(?<![\\w$%])0b[0-9a-fA-F]+\\b(?!\\$)'
+        'name': 'constant.numeric.binary.bass'
+      }
+      {
+        'comment': 'Binary Number as %01001'
+        'match': '(?<![\\w$%])%[0-9a-fA-F]+\\b(?!\\$)'
+        'name': 'constant.numeric.binary.bass'
+      }
+      {
+        'comment': 'Octal 0o04701'
+        'match': '\\b(?<![$%])0o[0-9a-fA-F]+\\b(?!\\$)'
+        'name': 'constant.numeric.octal.bass'
+      }
+      {
+        'comment': 'Integer / Decimal'
+        'match': '(?<![$%])\\b[0-9]+\\b(?!\\.)(?!\\$)'
+        'name': 'constant.numeric.integer.bass'
+      }
+      {
+        'comment': 'Label Highlighting'
+        'match': '\\b([_A-Za-z][_A-Za-z0-9.]*):'
+        'captures':
+          '1':
+            'name': 'entity.name.function.label.bass'
+        'name': 'meta.function.label.bass'
+      }
+      {
+        'comment': "Anonymous Labels: +; -;"
+        'match': '([+-])\\;(?=\\s)'
+        'captures':
+          '1':
+            'name':'entity.name.function.label.anon.bass'
+        'name': 'meta.function.label.anon.bass'
+      }
+      {
+        'comment': '\'Single Quoted\' Character Arrays'
+        'begin': '\''
+        'beginCaptures':
+          '0':
+            'name':'punctuation.definition.character.begin.bass'
+        'end': '\''
+        'endCaptures':
+          '0':
+            'name':'punctuation.definition.character.end.bass'
+        'name':'constant.character.bass'
+      }
+      {
+        'comment': '"Double Quoted" Strings'
+        'begin': '"'
+        'beginCaptures':
+          '0':
+            'name': 'punctuation.definition.string.begin.bass'
+        'end': '"'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.definition.string.end.bass'
+        'name': 'string.quoted.double.bass'
+      }
+      {
+        'comment': 'Keywords'
+        'match': '\\b((?x)macro|define|evaluate|variable|constant|scope|
+                  arch|endian|
+                  db|dw|dl|dd|dq|float32|float64)\\b'
+        'name': 'storage.type.bass'
+      }
+      {
+        'comment': 'Endianness Constants'
+        'match': '\\b([ml]sb)\\b'
+        'name': 'support.constant.language.bass'
+      }
+      {
+        'comment': 'Built-in Commmands'
+        'match': '\\b((?x)pushvar|pullvar|insert|
+                      fill|map|print|notice|warning|error|
+                      include|output)\\b'
+        'name': 'support.variable.bass'
+      }
+      {
+        'comment': 'Built-in Functions'
+        'match': '\\b(origin|base|pc|putchar)\\b'
+        'name': 'support.class.bass'
+      }
+      {
+        'comment': 'Control Flow Words'
+        'match': '\\b(if|elseif|else|endif|while|endwhile)\\b'
+        'name': 'keyword.control.flow.bass'
+      }
+      {
+        'comment': 'Comparison Operators'
+        'match': '!=|<=|>=|==|<|>'
+        'name': 'keyword.operator.comparison.bass'
+      }
+      {
+        'comment': 'Numeric Operators'
+        'match': '%|\\*|/|-|\\+'
+        'name': 'keyword.operator.base'
+      }
+      {
+        'comment': 'Bitwise Operators'
+        'match': '&|\\||~|/^|<<|>>'
+        'name': 'keyword.operator.bitwise.bass'
+      }
+      {
+        'comment': 'Logical Operators'
+        'match': '&&|!|\\|\\|'
+        'name': 'keyword.operator.logical.bass'
+      }
+    ]
